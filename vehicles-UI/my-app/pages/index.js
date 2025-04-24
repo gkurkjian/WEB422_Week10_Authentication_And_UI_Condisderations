@@ -1,3 +1,5 @@
+// Included library after downloading partially implemented code are, npm i jwt-decode
+
 import { Card } from "react-bootstrap";
 
 export default function Home() {
