@@ -1,15 +1,23 @@
-import { Card, Form, Button } from "react-bootstrap";
+import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
+import { authenticateUser } from "@/lib/authenticate";
 
 
 export default function Login(props){
 
   const [ userName, setUserName ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ warning, setWarning ] = useState('');
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();  // this will not refresh the page on each submit
     console.log(`Form Submitted:  UserName:${userName}, Password: ${password}`);  // here we'll read the user's input in console
+    try {
+      await authenticateUser(userName, password);
+    } catch(err) {
+      //console.log(err);
+      setWarning(err.message);
+    }
   };
 
   return (
@@ -27,7 +35,8 @@ export default function Login(props){
           <Form.Label>Password:</Form.Label><Form.Control value={password} onChange={e=>{setPassword(e.target.value)}} type="password" id="password" name="password" />
         </Form.Group>
         <br />
-        <Button variant="primary" className="pull-right" type="submit">Login</Button>
+        <Button variant="primary" className="pull-right" type="submit">Login</Button> <br /><br />
+        {warning && <Alert variant="danger">{warning}</Alert>}
       </Form>
     </>
   );
