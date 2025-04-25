@@ -1,19 +1,22 @@
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
 import { authenticateUser } from "@/lib/authenticate";
+import { useRouter } from 'next/router';
 
 
 export default function Login(props){
 
-  const [ userName, setUserName ] = useState('');
+  const [ userName, setUserName ] = useState('');  // here we'll interpret with the userName
   const [ password, setPassword ] = useState('');
-  const [ warning, setWarning ] = useState('');
+  const [ warning, setWarning ] = useState('');  // here we'll set the Alert under Button in case wrong userName/password input
+  const router = useRouter();  // here we'll set a router to push into a specific path after successful login from user
 
   async function handleSubmit(e) {
     e.preventDefault();  // this will not refresh the page on each submit
     console.log(`Form Submitted:  UserName:${userName}, Password: ${password}`);  // here we'll read the user's input in console
     try {
       await authenticateUser(userName, password);
+      router.push('/vehicles');  // here it'll push to vehicles.js page.
     } catch(err) {
       //console.log(err);
       setWarning(err.message);
