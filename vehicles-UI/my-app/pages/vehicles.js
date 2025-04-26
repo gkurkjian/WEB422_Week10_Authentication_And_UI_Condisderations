@@ -1,7 +1,10 @@
 import { Card, Table } from "react-bootstrap";
 import useSWR from 'swr';
+import { getToken } from "@/lib/authenticate";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+
+//const fetcher = (url) => fetch(url).then((res) => res.json());  // this fetcher is without tokenizing
+const fetcher = (url) => fetch(url, { headers: { Authorization: `JWT ${getToken()}` }}).then((res) => res.json());  // Authorizing and designating the token on user login
 
 export default function Vehicles() {
 
